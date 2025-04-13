@@ -1,0 +1,20 @@
+config BOOL_OPT
+    bool "Boolean option"
+    default y
+
+config TRISTATE_OPT
+    tristate "Tristate option"
+    default m
+
+config INT_OPT
+    int "Integer option"
+    range 0 100
+    default 42
+
+config HEX_OPT
+    hex "Hex option"
+    default 0x1F
+
+config STRING_OPT
+    string "String option"
+    default "hello"
