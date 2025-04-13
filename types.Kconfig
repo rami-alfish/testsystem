@@ -2,6 +2,10 @@ config CONFIG_BOOL
     bool "Bool option"
     default y
 
+config CONFIG_BOOL_DEP
+    bool "Bool that depends on CONFIG_BOOL"
+    depends on CONFIG_BOOL
+
 config CONFIG_TRISTATE
     tristate "Tristate option"
     default m
@@ -18,5 +22,6 @@ config CONFIG_HEX
 config CONFIG_STRING
     string "String option"
     default "hello"
+
 
 
