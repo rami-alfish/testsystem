@@ -92,5 +92,5 @@ config CONFIG_MULTI_DEFAULT
 
 config CONFIG_ENV
     bool "Has env binding"
-    option env="CONFIG_ENV_VAR"
+
 
