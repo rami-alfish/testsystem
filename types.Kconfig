@@ -1,41 +1,22 @@
-config CONFIG_A
-    bool "Boolean option"
+config CONFIG_BOOL
+    bool "Bool option"
     default y
 
-config CONFIG_B
-    bool "Depends on CONFIG_A"
-    depends on CONFIG_A
-
-config CONFIG_C
+config CONFIG_TRISTATE
     tristate "Tristate option"
     default m
 
-config CONFIG_D
-    bool "Depends on CONFIG_C = y"
-    depends on CONFIG_C = y
-
-config CONFIG_E
+config CONFIG_INT
     int "Integer option"
     range 0 100
     default 42
 
-config CONFIG_F
-    bool "Depends on CONFIG_E = 42"
-    depends on CONFIG_E = 42
-
-config CONFIG_G
-    hex "Hex option"
+config CONFIG_HEX
+    hex "Hexadecimal option"
     default 0x1F
 
-config CONFIG_H
-    bool "Depends on CONFIG_G = 0x1F"
-    depends on CONFIG_G = 0x1F
-
-config CONFIG_I
+config CONFIG_STRING
     string "String option"
     default "hello"
 
-config CONFIG_J
-    bool "Depends on CONFIG_I = \"hello\""
-    depends on CONFIG_I = "hello"
 
