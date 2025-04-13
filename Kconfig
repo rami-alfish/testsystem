@@ -1,0 +1,98 @@
+mainmenu "MAIN_MENU"
+
+
+
+menu "MENU_ONE"
+
+comment "COMMENT_ONE"
+depends on CONFIG_A || CONFIG_B
+
+menuconfig CONFIG_A
+    bool "CONFIG_A Prompt"
+    default y
+    help
+      Help text for CONFIG_A.
+
+config CONFIG_B
+    tristate
+    prompt "CONFIG_B Prompt" if CONFIG_A
+    default m if CONFIG_A = y
+    default y
+    depends on CONFIG_A != n
+    help
+      Help text for CONFIG_B.
+
+config CONFIG_C
+    int "CONFIG_C Prompt"
+    default 42
+    range 0 100
+    range 50 75 if CONFIG_B = m
+    depends on CONFIG_B = y && CONFIG_A = y
+    help
+      CONFIG_C is an integer from 0 to 100.
+
+config CONFIG_D
+    string "CONFIG_D Prompt"
+    default "default_value"
+    depends on CONFIG_C >= 10 && CONFIG_B != n
+    help
+      This is a string configuration.
+
+config CONFIG_E
+    hex "CONFIG_E Prompt"
+    default 0x1F
+    imply CONFIG_C
+    select CONFIG_D if CONFIG_B
+    help
+      Hex config that implies CONFIG_C.
+
+config CONFIG_F
+    bool
+    prompt "CONFIG_F Prompt" if CONFIG_E < 0x20 && CONFIG_C < 80
+    depends on CONFIG_A && CONFIG_B && (CONFIG_D = "default_value")
+    option env="CONFIG_F_ENV"
+    help
+      CONFIG_F is conditional with environment variable.
+
+endmenu
+
+menu "MENU_TWO"
+
+choice CHOICE_ONE
+    prompt "CHOICE_PROMPT"
+    default OPTION_ONE
+    depends on CONFIG_A
+
+config OPTION_ONE
+    bool "First Option"
+    depends on CONFIG_B = y
+
+config OPTION_TWO
+    bool "Second Option"
+    depends on CONFIG_B = m
+
+endchoice
+
+endmenu
+
+menu "MENU_THREE"
+
+if CONFIG_A && (CONFIG_B != n || !(CONFIG_C < 20))
+
+config CONFIG_G
+    bool "CONFIG_G Prompt"
+    default y
+    help
+      CONFIG_G is conditionally included.
+
+config CONFIG_H
+    tristate "CONFIG_H Prompt"
+    default m
+    depends on CONFIG_G || CONFIG_E > 0x10
+    help
+      CONFIG_H depends on CONFIG_G or hex value.
+
+endif
+
+endmenu
+
