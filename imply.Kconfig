@@ -1,0 +1,6 @@
+config IMPLY_TARGET
+    bool "Target of imply"
+
+config IMPLIER
+    bool "Implies other"
+    imply IMPLY_TARGET

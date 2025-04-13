@@ -1,0 +1,7 @@
+config SELECT_TARGET
+    bool "Target"
+
+config SELECT_DEPENDS
+    bool "Selector with depends"
+    depends on n
+    select SELECT_TARGET

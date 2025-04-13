@@ -1,0 +1,12 @@
+config A
+    bool "Option A"
+    default n
+
+config B
+    bool "Option B"
+    depends on A
+    default n
+
+config C
+    bool "Option C"
+    select B

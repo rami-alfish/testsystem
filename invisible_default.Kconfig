@@ -1,0 +1,4 @@
+config INVISIBLE_DEFAULT
+    bool
+    default y
+    depends on n

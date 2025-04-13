@@ -1,0 +1,8 @@
+config ID_HEX
+    hex "Device ID"
+    range 0x00 0xFF
+    default 0x1A
+
+config ACTIVATE
+    bool "Activate"
+    depends on ID_HEX = 0x1A

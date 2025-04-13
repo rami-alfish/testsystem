@@ -1,0 +1,10 @@
+choice
+    prompt "Choose one"
+
+config CHOICE_1
+    bool "Choice 1"
+
+config CHOICE_2
+    bool "Choice 2"
+
+endchoice

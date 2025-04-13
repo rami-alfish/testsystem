@@ -1,0 +1,8 @@
+config CONFLICT_1
+    bool "Conflicting 1"
+    default y
+
+config CONFLICT_2
+    bool "Conflicting 2"
+    default y
+    depends on !CONFLICT_1
