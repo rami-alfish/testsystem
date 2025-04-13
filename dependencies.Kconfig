@@ -1,0 +1,27 @@
+config B
+    bool "Option B"
+    default n
+
+config C
+    bool "Option C"
+    default y
+
+config A
+    bool "A depends on B=n or C=y"
+    depends on !B || C
+
+config D
+    tristate "Tristate D"
+    default m
+
+config E
+    bool "Depends on D=m or D=y"
+    depends on D
+
+config O
+    bool "Option O (selects P if C)"
+    select P if C
+
+config P
+    bool "Selected by O if C"
+
