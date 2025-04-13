@@ -1,98 +1,96 @@
-mainmenu "MAIN_MENU"
+# ==============================================================
+# Variablen-Typen: bool, tristate, int, hex, string
+# ==============================================================
 
-
-
-menu "MENU_ONE"
-
-comment "COMMENT_ONE"
-depends on CONFIG_A || CONFIG_B
-
-menuconfig CONFIG_A
-    bool "CONFIG_A Prompt"
+config CONFIG_BOOL
+    bool "Boolean Option"
     default y
-    help
-      Help text for CONFIG_A.
 
-config CONFIG_B
-    tristate
-    prompt "CONFIG_B Prompt" if CONFIG_A
-    default m if CONFIG_A = y
-    default y
-    depends on CONFIG_A != n
-    help
-      Help text for CONFIG_B.
+config CONFIG_TRISTATE
+    tristate "Tristate Option"
+    default m
 
-config CONFIG_C
-    int "CONFIG_C Prompt"
+config CONFIG_INT
+    int "Integer Option"
     default 42
     range 0 100
-    range 50 75 if CONFIG_B = m
-    depends on CONFIG_B = y && CONFIG_A = y
-    help
-      CONFIG_C is an integer from 0 to 100.
+    range 10 90 if CONFIG_BOOL
 
-config CONFIG_D
-    string "CONFIG_D Prompt"
-    default "default_value"
-    depends on CONFIG_C >= 10 && CONFIG_B != n
-    help
-      This is a string configuration.
-
-config CONFIG_E
-    hex "CONFIG_E Prompt"
+config CONFIG_HEX
+    hex "Hex Option"
     default 0x1F
-    imply CONFIG_C
-    select CONFIG_D if CONFIG_B
-    help
-      Hex config that implies CONFIG_C.
 
-config CONFIG_F
-    bool
-    prompt "CONFIG_F Prompt" if CONFIG_E < 0x20 && CONFIG_C < 80
-    depends on CONFIG_A && CONFIG_B && (CONFIG_D = "default_value")
-    option env="CONFIG_F_ENV"
-    help
-      CONFIG_F is conditional with environment variable.
+config CONFIG_STRING
+    string "String Option"
+    default "hello"
+
+# ==============================================================
+# Attribute: depends on, select, imply, prompt if
+# ==============================================================
+
+config CONFIG_SELECT_TARGET
+    bool "Select Target"
+
+config CONFIG_IMPLY_TARGET
+    bool "Implied by other"
+
+config CONFIG_DEPENDS
+    bool "Has dependencies"
+    depends on CONFIG_BOOL && CONFIG_TRISTATE = m
+
+config CONFIG_WITH_SELECT
+    bool "Uses select"
+    select CONFIG_SELECT_TARGET
+
+config CONFIG_WITH_IMPLY
+    bool "Uses imply"
+    imply CONFIG_IMPLY_TARGET
+
+# ==============================================================
+# Struktur: menu, choice, if/endif
+# ==============================================================
+
+menu "Test Menu"
+
+config CONFIG_IN_MENU
+    bool "Inside a menu"
+    default y
 
 endmenu
 
-menu "MENU_TWO"
+choice
+    prompt "Choose one"
 
-choice CHOICE_ONE
-    prompt "CHOICE_PROMPT"
-    default OPTION_ONE
-    depends on CONFIG_A
+config CHOICE_1
+    bool "First choice"
+    depends on CONFIG_BOOL
 
-config OPTION_ONE
-    bool "First Option"
-    depends on CONFIG_B = y
-
-config OPTION_TWO
-    bool "Second Option"
-    depends on CONFIG_B = m
+config CHOICE_2
+    bool "Second choice"
 
 endchoice
 
-endmenu
+if CONFIG_BOOL && CONFIG_TRISTATE != n
 
-menu "MENU_THREE"
-
-if CONFIG_A && (CONFIG_B != n || !(CONFIG_C < 20))
-
-config CONFIG_G
-    bool "CONFIG_G Prompt"
-    default y
-    help
-      CONFIG_G is conditionally included.
-
-config CONFIG_H
-    tristate "CONFIG_H Prompt"
-    default m
-    depends on CONFIG_G || CONFIG_E > 0x10
-    help
-      CONFIG_H depends on CONFIG_G or hex value.
+config CONFIG_IF_BLOCK
+    bool "Only if certain conditions met"
 
 endif
 
-endmenu
+# ==============================================================
+# Spezialfälle: kein prompt, mehrfach default, option env
+# ==============================================================
+
+config CONFIG_INVISIBLE
+    bool
+    default y
+
+config CONFIG_MULTI_DEFAULT
+    bool "Has multiple defaults"
+    default n
+    default y if CONFIG_INT > 40
+
+config CONFIG_ENV
+    bool "Has env binding"
+    option env="CONFIG_ENV_VAR"
 
