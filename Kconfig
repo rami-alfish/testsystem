@@ -1,0 +1,63 @@
+config FEATURE_A
+    bool "Feature A"
+
+
+config FEATURE_B
+    bool "Feature B"
+    depends on FEATURE_A
+
+
+config FEATURE_C
+    bool "Feature C"
+    select FEATURE_A
+
+
+config FEATURE_D
+    tristate "Feature D"
+
+config FEATURE_E
+    tristate "Feature E"
+    depends on FEATURE_D
+
+
+config FEATURE_F
+    bool "Feature F"
+    imply FEATURE_A
+
+
+choice
+    prompt "Select type (X/Y)"
+    config CHOICE_X
+        bool "Choice X"
+    config CHOICE_Y
+        bool "Choice Y"
+endchoice
+
+
+choice
+    prompt "Select type (M/N, depends on A)"
+    depends on FEATURE_A
+    config CHOICE_M
+        bool "Choice M"
+    config CHOICE_N
+        bool "Choice N"
+endchoice
+
+
+config INT_OPTION
+    int "Integer Option"
+    range 1 10
+    default 5
+
+
+config STRING_OPTION
+    string "String Option"
+    default "default_value"
+
+
+config FEATURE_COMPLEX
+    tristate "Complex Feature"
+    depends on FEATURE_A || (FEATURE_B && FEATURE_C)
+    select FEATURE_D
+    imply FEATURE_E
+
