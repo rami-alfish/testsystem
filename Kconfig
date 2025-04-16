@@ -1,63 +1,92 @@
-config FEATURE_A
-    bool "Feature A"
+menu "Minimal Testcases – Full Semantics"
 
+# --- Typen ---
+config BOOL_FEAT
+    bool "Bool feature"
 
-config FEATURE_B
-    bool "Feature B"
-    depends on FEATURE_A
+config TRI_FEAT
+    tristate "Tristate feature"
 
+config INT_FEAT
+    int "Int feature"
+    range 1 5
+    default 3
 
-config FEATURE_C
-    bool "Feature C"
-    select FEATURE_A
+config STR_FEAT
+    string "String feature"
+    default "abc"
 
+# --- depends on / select / imply ---
+config DEP_B
+    bool "Depends B"
+    depends on BOOL_FEAT
 
-config FEATURE_D
-    tristate "Feature D"
+config SEL_C
+    bool "Select C"
+    select BOOL_FEAT
 
-config FEATURE_E
-    tristate "Feature E"
-    depends on FEATURE_D
+config IMP_D
+    bool "Imply D"
+    imply BOOL_FEAT
 
-
-config FEATURE_F
-    bool "Feature F"
-    imply FEATURE_A
-
-
+# --- choice ---
 choice
-    prompt "Select type (X/Y)"
-    config CHOICE_X
-        bool "Choice X"
-    config CHOICE_Y
-        bool "Choice Y"
+    prompt "Choice A/B"
+    config CH_A
+        bool "Choice A"
+    config CH_B
+        bool "Choice B"
 endchoice
 
+# --- prompt if / default if / select if ---
+config ADV
+    bool "Advanced"
 
+config DEBUG
+    bool "Debug (visible only if ADV)" if ADV
+
+config VERBOSE
+    bool "Verbose"
+    select DEBUG if ADV
+
+config LEVEL
+    int "Level"
+    default 5 if DEBUG
+    default 1
+
+# --- Complex depends / bad select target ---
+config COND_TARGET
+    bool
+    depends on NONE
+
+config SEL_BAD
+    bool "Bad select"
+    select COND_TARGET
+
+config NONE
+    bool
+    default n
+
+# --- Nested depends (transitiv) ---
+config BASE
+    bool
+
+config MID
+    bool
+    depends on BASE
+
+config TOP
+    bool
+    depends on MID
+
+# --- Mixed-type choice ---
 choice
-    prompt "Select type (M/N, depends on A)"
-    depends on FEATURE_A
-    config CHOICE_M
-        bool "Choice M"
-    config CHOICE_N
-        bool "Choice N"
+    prompt "Mixed choice"
+    config MIX_BOOL
+        bool "Bool in choice"
+    config MIX_TRI
+        tristate "Tristate in choice"
 endchoice
 
-
-config INT_OPTION
-    int "Integer Option"
-    range 1 10
-    default 5
-
-
-config STRING_OPTION
-    string "String Option"
-    default "default_value"
-
-
-config FEATURE_COMPLEX
-    tristate "Complex Feature"
-    depends on FEATURE_A || (FEATURE_B && FEATURE_C)
-    select FEATURE_D
-    imply FEATURE_E
+endmenu
 
