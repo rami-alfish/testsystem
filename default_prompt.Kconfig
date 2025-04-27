@@ -1,7 +1,0 @@
-config DEFAULT_OPT
-    bool "Option with default"
-    default y
-
-config PROMPTED_OPT
-    bool "Option with prompt"
-    prompt "Visible only if DEFAULT_OPT" if DEFAULT_OPT

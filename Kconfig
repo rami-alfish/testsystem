@@ -16,6 +16,10 @@ config STR_FEAT
     string "String feature"
     default "abc"
 
+config HEX_FEAT
+    hex "Hex feature"
+    default 0x1F
+
 # --- depends on / select / imply ---
 config DEP_B
     bool "Depends B"
